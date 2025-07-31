@@ -1,0 +1,19 @@
+"# Ignore large files" 
+"models/" 
+"*.pt" 
+"*.bin" 
+"*.safetensors" 
+
+.env
+
+models/
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# VSCode settings
+.vscode/
