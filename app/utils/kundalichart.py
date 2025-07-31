@@ -57,18 +57,18 @@ def generate_kundli_image_jpg(kundli_data, chart_type="lagna"):
             12: (620, 105),
         },
         "south": {
-            1:  (370, 230),
-            2: (655, 230),   
-            3: (890, 230),
-            4:  (890, 470),  
-            5: (890, 760),  
-            6: (890, 985),
-            7:  (660, 985), 
-            8: (370, 985),  
-            9: (165, 985),
-            10: (165, 760), 
-            11: (165, 470), 
-            12: (165, 230)
+            1:  (350, 130),
+            2: (615, 130),   
+            3: (870, 130),
+            4:  (870, 380),  
+            5: (870, 650),  
+            6: (870, 885),
+            7:  (615, 885), 
+            8: (350, 885),  
+            9: (105, 885),
+            10: (105, 650), 
+            11: (105, 380), 
+            12: (105, 130)
         }
     }
 
@@ -99,9 +99,9 @@ def generate_kundli_image_jpg(kundli_data, chart_type="lagna"):
     for house_num, (x, y) in positions.items():
         draw.text((x, y - 25), f"H{house_num}", fill="gray", font=font)
 
-    for rashi, house in house_for_rashi.items():
-        x, y = positions[house]
-        draw.text((x + 35, y - 45), rashi_symbols.get(rashi, ""), font=font, fill="darkblue")
+    # for rashi, house in house_for_rashi.items():
+    #     x, y = positions[house]
+    #     draw.text((x + 35, y - 45), rashi_symbols.get(rashi, ""), font=font, fill="darkblue")
 
     planet_colors = {
         "Sun": "orange", "Moon": "blue", "Mercury": "green",
