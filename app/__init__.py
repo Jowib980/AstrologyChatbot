@@ -29,6 +29,9 @@ def create_app():
     from app.routes.kundali import bp as kundali_bp
     app.register_blueprint(kundali_bp, url_prefix="/api")
 
+    from app.routes.horoscope import bp as horoscope_bp
+    app.register_blueprint(horoscope_bp, url_prefix="/api")
+
     with app.app_context():
         db.create_all()
 
