@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, Blueprint
 from flask_cors import CORS
-from app.utils.match_horoscope import get_moon_rashi_nakshatra
+from app.utils.match_horoscope import get_moon_rashi_nakshatra, rashis, nakshatras
 from app.utils.match_kundali import match_all_kootas
 
 bp = Blueprint("match_horoscope", __name__)
@@ -25,7 +25,15 @@ def match_horoscope():
     try:
         user_moon = get_moon_rashi_nakshatra(user["dob"], user["tob"], user["place"])
         partner_moon = get_moon_rashi_nakshatra(partner["dob"], partner["tob"], partner["place"])
-        result = match_all_kootas(user_moon, partner_moon)
+        boy = {
+            "rashi": rashis.index(user_moon["rashi"]) + 1,
+            "nakshatra": nakshatras.index(user_moon["nakshatra"])
+        }
+        girl = {
+            "rashi": rashis.index(partner_moon["rashi"]) + 1,
+            "nakshatra": nakshatras.index(partner_moon["nakshatra"])
+        }
+        result = match_all_kootas(boy, girl)
 
         return jsonify({
             "status": "success",
