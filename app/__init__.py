@@ -32,6 +32,12 @@ def create_app():
     from app.routes.horoscope import bp as horoscope_bp
     app.register_blueprint(horoscope_bp, url_prefix="/api")
 
+    from app.routes.prediction import bp as prediction_bp
+    app.register_blueprint(prediction_bp, url_prefix="/api")
+
+    from app.routes.numerology import bp as numerology_bp
+    app.register_blueprint(numerology_bp, url_prefix="/api")
+
     with app.app_context():
         db.create_all()
 
