@@ -58,7 +58,12 @@ numerology_data = {
         "god_goddess": "Surya (Sun God)",
         "fast": "Sunday",
         "favourable_dates": "1st, 10th, 19th, 28th",
-        "mantra": "ॐ घृणिः सूर्याय नमः"
+        "mantra": "ॐ घृणिः सूर्याय नमः",
+        "personality": "Leader, independent, ambitious.",
+        "career": "Leadership, entrepreneurship, management.",
+        "compatible": [1, 2, 4],
+        "dos": ["Take initiative", "Lead by example"],
+        "donts": ["Avoid arrogance", "Don’t dominate others"],
     },
     2: {
         "favourable_sign": "Cancer",
@@ -72,7 +77,12 @@ numerology_data = {
         "god_goddess": "Parvati, Chandra Dev",
         "fast": "Monday",
         "favourable_dates": "2nd, 11th, 20th, 29th",
-        "mantra": "ॐ चन्द्राय नमः"
+        "mantra": "ॐ चन्द्राय नमः",
+        "personality": "Diplomatic, sensitive, cooperative.",
+        "career": "Counseling, teaching, arts, HR.",
+        "compatible": [2, 4, 8],
+        "dos": ["Be kind", "Stay calm"],
+        "donts": ["Avoid overthinking", "Don't depend too much"],
     },
     3: {
         "favourable_sign": "Sagittarius, Pisces",
@@ -86,7 +96,12 @@ numerology_data = {
         "god_goddess": "Brihaspati, Vishnu",
         "fast": "Thursday",
         "favourable_dates": "3rd, 12th, 21st, 30th",
-        "mantra": "ॐ बृं बृहस्पतये नमः"
+        "mantra": "ॐ बृं बृहस्पतये नमः",
+        "personality": "Creative, expressive, optimistic.",
+        "career": "Writing, acting, media, public speaking.",
+        "compatible": [3, 6, 9],
+        "dos": ["Express yourself", "Follow creative interests"],
+        "donts": ["Avoid being scattered", "Don’t procrastinate"],
     },
     4: {
         "favourable_sign": "Aquarius",
@@ -100,7 +115,12 @@ numerology_data = {
         "god_goddess": "Durga, Lord Ganesha",
         "fast": "Saturday",
         "favourable_dates": "4th, 13th, 22nd, 31st",
-        "mantra": "ॐ रां राहवे नमः"
+        "mantra": "ॐ रां राहवे नमः",
+        "personality": "Practical, disciplined, loyal.",
+        "career": "Engineering, construction, security.",
+        "compatible": [1, 5, 7],
+        "dos": ["Stick to routine", "Be consistent"],
+        "donts": ["Avoid stubbornness", "Don’t resist change"],
     },
     5: {
         "favourable_sign": "Gemini, Virgo",
@@ -114,7 +134,12 @@ numerology_data = {
         "god_goddess": "Narayan, Vishnu",
         "fast": "Wednesday",
         "favourable_dates": "5th, 14th, 23rd",
-        "mantra": "ॐ बुं बुधाय नमः"
+        "mantra": "ॐ बुं बुधाय नमः",
+        "personality": "Adventurous, dynamic, persuasive.",
+        "career": "Sales, marketing, travel, media.",
+        "compatible": [1, 3, 5],
+        "dos": ["Take smart risks", "Stay adaptable"],
+        "donts": ["Avoid impulsive decisions", "Don’t overindulge"],
     },
     6: {
         "favourable_sign": "Taurus, Libra",
@@ -128,7 +153,12 @@ numerology_data = {
         "god_goddess": "Lakshmi, Shukracharya",
         "fast": "Friday",
         "favourable_dates": "6th, 15th, 24th",
-        "mantra": "ॐ शुं शुक्राय नमः"
+        "mantra": "ॐ शुं शुक्राय नमः",
+        "personality": "Responsible, nurturing, harmonious.",
+        "career": "Education, beauty, healthcare, art.",
+        "compatible": [3, 6, 9],
+        "dos": ["Care for others", "Stay balanced"],
+        "donts": ["Avoid being too controlling", "Don’t ignore self-care"],
     },
     7: {
         "favourable_sign": "Pisces, Cancer",
@@ -142,7 +172,12 @@ numerology_data = {
         "god_goddess": "Ganesh, Lord Shiva",
         "fast": "Tuesday",
         "favourable_dates": "7th, 16th, 25th",
-        "mantra": "ॐ कें केतवे नमः"
+        "mantra": "ॐ कें केतवे नमः",
+        "personality": "Spiritual, analytical, introspective.",
+        "career": "Research, IT, psychology, philosophy.",
+        "compatible": [2, 4, 7],
+        "dos": ["Trust your intuition", "Spend time in nature"],
+        "donts": ["Avoid isolation", "Don’t be too skeptical"],
     },
     8: {
         "favourable_sign": "Capricorn, Aquarius",
@@ -156,7 +191,12 @@ numerology_data = {
         "god_goddess": "Shani Dev, Hanuman",
         "fast": "Saturday",
         "favourable_dates": "8th, 17th, 26th",
-        "mantra": "ॐ शं शनैश्चराय नमः"
+        "mantra": "ॐ शं शनैश्चराय नमः",
+        "personality": "Ambitious, authoritative, goal-driven.",
+        "career": "Business, politics, finance, real estate.",
+        "compatible": [2, 4, 8],
+        "dos": ["Plan long-term", "Use power wisely"],
+        "donts": ["Avoid material obsession", "Don’t suppress emotions"],
     },
     9: {
         "favourable_sign": "Aries, Scorpio",
@@ -170,7 +210,12 @@ numerology_data = {
         "god_goddess": "Hanuman, Durga",
         "fast": "Tuesday",
         "favourable_dates": "9th, 18th, 27th",
-        "mantra": "ॐ क्रां क्रीं क्रौं सः भौमाय नमः"
+        "mantra": "ॐ क्रां क्रीं क्रौं सः भौमाय नमः",
+        "personality": "Compassionate, generous, emotional.",
+        "career": "NGOs, medicine, spirituality, counseling.",
+        "compatible": [3, 6, 9],
+        "dos": ["Help others", "Practice forgiveness"],
+        "donts": ["Avoid being overly emotional", "Don’t hold grudges"],
     }
 }
 

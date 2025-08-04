@@ -38,6 +38,15 @@ def create_app():
     from app.routes.numerology import bp as numerology_bp
     app.register_blueprint(numerology_bp, url_prefix="/api")
 
+    from app.routes.nakshatra import bp as nakshatra_bp
+    app.register_blueprint(nakshatra_bp, url_prefix="/api")
+
+    from app.routes.health import bp as health_bp
+    app.register_blueprint(health_bp, url_prefix="/api")
+
+    from app.routes.love import bp as love_bp
+    app.register_blueprint(love_bp, url_prefix="/api")
+
     with app.app_context():
         db.create_all()
 

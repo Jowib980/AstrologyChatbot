@@ -47,3 +47,20 @@ def parse_time_string(t):
         except ValueError:
             continue
     raise ValueError("Invalid time format")
+
+def calculate_health_index(zodiac_positions):
+    score = 50
+    good_moon_signs = ["Taurus", "Cancer"]
+    if zodiac_positions.get("Moon") in good_moon_signs:
+        score += 20
+    fiery_signs = ["Aries", "Leo", "Sagittarius"]
+    if zodiac_positions.get("Sun") in fiery_signs:
+        score += 15
+    strong_mercury_signs = ["Virgo", "Gemini"]
+    if zodiac_positions.get("Mercury") in strong_mercury_signs:
+        score += 10
+    strong_venus_signs = ["Libra", "Taurus"]
+    if zodiac_positions.get("Venus") in strong_venus_signs:
+        score += 5
+    score = max(0, min(score, 100))
+    return score
