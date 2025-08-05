@@ -47,6 +47,24 @@ def create_app():
     from app.routes.love import bp as love_bp
     app.register_blueprint(love_bp, url_prefix="/api")
 
+    from app.routes.gemstone import bp as gemstone_bp
+    app.register_blueprint(gemstone_bp, url_prefix="/api")
+
+    from app.routes.career import bp as career_bp
+    app.register_blueprint(career_bp, url_prefix="/api")
+
+    from app.routes.kalsarp import bp as kalsarp_bp
+    app.register_blueprint(kalsarp_bp, url_prefix="/api")
+
+    from app.routes.mangal import bp as mangal_bp
+    app.register_blueprint(mangal_bp, url_prefix="/api")
+
+    from app.routes.ascendant import bp as ascendant_bp
+    app.register_blueprint(ascendant_bp, url_prefix="/api")
+
+    from app.routes.transit import bp as transit_bp
+    app.register_blueprint(transit_bp, url_prefix="/api")
+
     with app.app_context():
         db.create_all()
 

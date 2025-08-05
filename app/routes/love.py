@@ -7,7 +7,7 @@ bp = Blueprint('love', __name__)
 # Venus traits by sign
 def describe_venus_traits(sign):
     traits = {
-        "Aries": "passionate, direct, and spontaneous in love",
+        "Aries": "Confident, energetic, enthusiastic, independent, impulsive, passionate, direct, spontaneous in love and sometimes impatient",
         "Taurus": "romantic, sensual, and loyal",
         "Gemini": "playful, witty, and intellectually curious",
         "Cancer": "nurturing, protective, and emotionally deep",

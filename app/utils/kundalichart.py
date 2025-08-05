@@ -85,8 +85,17 @@ def generate_kundli_image_jpg(kundli_data, chart_type="lagna"):
         "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo",
         "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"
     ]
-    lagna_rashi = kundli_data["Ascendant"]["rashi"]
+
+    lagna_rashi = (
+        kundli_data.get("Ascendant", {}).get("rashi")
+        or kundli_data.get("ascendant_sign")
+    )
+
+    if not lagna_rashi or lagna_rashi not in rashi_names:
+        raise ValueError(f"Invalid or missing Lagna Rashi: {lagna_rashi}")
+
     lagna_index = rashi_names.index(lagna_rashi)
+
 
     # Map rashis to house numbers
     house_for_rashi = {}
