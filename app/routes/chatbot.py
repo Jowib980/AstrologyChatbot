@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from app.utils.astrology import get_zodiac_positions
 from app.utils.ai import generate_answer, format_prompt
-from app.models import User, ChatHistory, db
+from app.models import User, db
 
 bp = Blueprint("chatbot", __name__)
 

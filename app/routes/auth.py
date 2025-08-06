@@ -19,16 +19,24 @@ def register():
     new_user = User(
         name=data['name'],
         email=data['email'],
-        password_hash=hashed_password
+        password_hash=hashed_password,
+        dob=data['dob'],
+        time_of_birth=data['tob'],
+        place_of_birth=data['place']
     )
     db.session.add(new_user)
     db.session.commit()
+
+    dob_str = new_user.dob.strftime("%Y-%m-%d") if new_user.dob else None
 
     # Return user data in response (excluding password)
     user_data = {
         "id": new_user.id,
         "name": new_user.name,
-        "email": new_user.email
+        "email": new_user.email,
+        "dob": new_user.dob_str,
+        "tob": new_user.time_of_birth,
+        "place": new_user.place_of_birth
     }
 
     return jsonify({

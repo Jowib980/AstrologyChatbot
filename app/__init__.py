@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
+from app.config import Config
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -10,12 +11,11 @@ bcrypt = Bcrypt()  # <== THIS is what was missing from top level
 
 def create_app():
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///chatbot.db'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config.from_object(Config)
 
     db.init_app(app)
     bcrypt.init_app(app)
-    CORS(app)
+    CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
     from app.routes.chatbot import bp as chatbot_bp
     app.register_blueprint(chatbot_bp, url_prefix="/api")
