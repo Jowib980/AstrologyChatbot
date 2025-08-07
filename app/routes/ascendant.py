@@ -11,13 +11,12 @@ def ascendant_api():
     dob = data.get("dob")
     tob = data.get("tob")
     place = data.get("place")
+    user_id = data.get("user_id")
 
     try:
-        # Calculate chart
         chart = calculate_chart(dob, tob, place)
         ascendant_sign = chart["ascendant_sign"]
 
-        # Dynamically generate traits
         traits = generate_ascendant_traits(ascendant_sign)
         if not traits:
             return jsonify({
@@ -25,6 +24,23 @@ def ascendant_api():
                 "ascendant": ascendant_sign,
                 "error": f"No traits found for {ascendant_sign}"
             }), 404
+
+        # Save to database
+        report = AscendantReport(
+            user_id=user_id,
+            name=name,
+            dob=dob,
+            tob=tob,
+            place=place,
+            ascendant=ascendant_sign,
+            personality=traits.get("personality"),
+            strengths=traits.get("strengths"),
+            weaknesses=traits.get("weaknesses"),
+            career=traits.get("career"),
+            compatibility=traits.get("compatibility"),
+        )
+        db.session.add(report)
+        db.session.commit()
 
         return jsonify({
             "name": name,
