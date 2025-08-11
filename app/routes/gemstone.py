@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify, Blueprint
 from datetime import datetime
 from app.utils.numerology import generate_numerology_report
+from app import db
+from app.models import GemstoneReport
 
 bp = Blueprint("gemstone", __name__)
 
@@ -52,41 +54,51 @@ def gemstone_report():
     try:
         data = request.get_json()
         name = data.get("name")
-        dob_str = data.get("dob")  # "YYYY-MM-DD"
-        tob_str = data.get("tob")  # "HH:MM"
+        dob_str = data.get("dob")
+        tob_str = data.get("tob")
         place = data.get("place")
         gender = data.get("gender")
+        user_id = data.get("user_id")  # Ensure this is passed
 
-        # Call zodiac calculation ONCE
+        # Planetary positions
         positions = get_moon_positions(dob_str, tob_str, place)
         if not positions:
             return jsonify({"error": "Unable to calculate zodiac positions. Check birth details."}), 400
 
-        # --- LIFE STONE ---
         asc_sign = positions.get("Ascendant", {}).get("sign")
         lagna_lord = sign_rulers.get(asc_sign)
         life_stone_info = gemstone_data.get(lagna_lord)
 
-        # --- LUCKY STONE ---
         moon_sign = positions.get("Moon", {}).get("sign")
         lucky_stone_planet = sign_rulers.get(moon_sign)
         lucky_stone_info = gemstone_data.get(lucky_stone_planet)
 
-        # --- BHAGYA STONE ---
         ninth_house_sign = positions.get("House_9", {}).get("sign")
         ninth_lord = sign_rulers.get(ninth_house_sign)
         bhagya_stone_info = gemstone_data.get(ninth_lord)
 
-        print("DEBUG positions:", positions)
-        print("DEBUG lagna_lord:", lagna_lord, "lucky_lord:", lucky_stone_planet, "bhagya_lord:", ninth_lord)
-
-
-        # If any stone is missing, return partial response
         if not all([life_stone_info, lucky_stone_info, bhagya_stone_info]):
             return jsonify({"error": "Could not determine all gemstone recommendations."}), 400
 
-        # --- Structured AstroSage-style report ---
-        report = {
+        # Save to DB
+        report = GemstoneReport(
+            user_id=user_id,
+            name=name,
+            gender=gender,
+            dob=dob_str,
+            tob=tob_str,
+            place=place,
+            ascendant=asc_sign,
+            moon_sign=moon_sign,
+            house_9_sign=ninth_house_sign,
+            life_stone=life_stone_info["gem"],
+            lucky_stone=lucky_stone_info["gem"],
+            bhagya_stone=bhagya_stone_info["gem"]
+        )
+        db.session.add(report)
+        db.session.commit()
+
+        response = {
             "life_stone": {
                 "description": f"Since your Ascendant sign is {asc_sign}, ruled by {lagna_lord}, "
                                f"the life stone helps balance your personality and enhance your natural strengths.",
@@ -110,11 +122,10 @@ def gemstone_report():
                 "minimum_weight": bhagya_stone_info["weight"],
                 "wearing_instructions": f"{bhagya_stone_info['metal']}, in {bhagya_stone_info['finger']}",
                 "mantra": bhagya_stone_info["mantra"]
-            },
+            }
         }
 
-        print(report)
-        return jsonify(report)
+        return jsonify(response)
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500

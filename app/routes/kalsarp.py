@@ -2,25 +2,31 @@ from flask import Blueprint, request, jsonify
 from app.utils.calculate_chart import calculate_chart
 from app.utils.kundalichart import generate_kundli_image_jpg
 from app.utils.kalsarp import check_kalsarp_dosh
+from app import db 
+from app.models import KalsarpReport
 
 bp = Blueprint("kalsarp", __name__)
 
 @bp.route("/kalsarp", methods=["POST"])
 def kalsarp_api():
-    data = request.json
-    name = data.get("name")
-    dob = data.get("dob")
-    tob = data.get("tob")
-    place = data.get("place")
-
     try:
+        data = request.json
+        name = data.get("name")
+        dob = data.get("dob")
+        tob = data.get("tob")
+        place = data.get("place")
+        user_id = data.get("user_id")
+
+        if not all([name, dob, tob, place, user_id]):
+            return jsonify({"error": "Missing required fields"}), 400
+
         # Step 1 – Calculate chart with planets
         chart = calculate_chart(dob, tob, place)
 
         # Step 2 – Check Kaal Sarp Dosh
         has_dosh, message = check_kalsarp_dosh(chart["planets"])
 
-        # Step 3 – Add required chart details for image generation
+        # Step 3 – Prepare kundli data for chart image
         kundli_data = {
             "name": name,
             "dob": dob,
@@ -31,11 +37,26 @@ def kalsarp_api():
         for planet, details in chart["planets"].items():
             kundli_data[planet] = {"rashi": details["sign"]}
 
-
         # Step 4 – Generate Lagna Kundali Image
         chart_img_base64 = generate_kundli_image_jpg(kundli_data, chart_type="lagna")
 
-        # Step 5 – Return JSON response
+        # Step 5 – Save to DB
+        report = KalsarpReport(
+            user_id=user_id,
+            name=name,
+            dob=dob,
+            tob=tob,
+            place=place,
+            ascendant=chart["ascendant_sign"],
+            moon_sign=chart["moon_sign"],
+            has_kalsarp_dosh=has_dosh,
+            dosh_message=message,
+            chart_base64=chart_img_base64
+        )
+        db.session.add(report)
+        db.session.commit()
+
+        # Step 6 – Return JSON response
         return jsonify({
             "name": name,
             "ascendant": chart["ascendant_sign"],

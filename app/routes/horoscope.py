@@ -4,6 +4,8 @@ from app.utils.match_horoscope import get_moon_rashi_nakshatra, rashis, nakshatr
 from app.utils.match_kundali import match_all_kootas
 from app import db
 from app.models import HoroscopeMatch
+import json
+import ast
 
 bp = Blueprint("match_horoscope", __name__)
 
@@ -57,6 +59,7 @@ def match_horoscope():
 
         return jsonify({
             "status": "success",
+            "match_id": match.id,
             "boy": user_moon,
             "girl": partner_moon,
             "guna_matching": result
@@ -64,3 +67,30 @@ def match_horoscope():
 
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)})
+
+@bp.route("/get_match/<int:match_id>", methods=["GET"])
+def get_match(match_id):
+    
+    match = HoroscopeMatch.query.get(match_id)
+    if not match:
+        return jsonify({"status": "error", "message": "Match not found"}), 404
+
+    # Convert Python dict string to Python dict
+    matching_result_dict = None
+    if match.matching_result:
+        try:
+            matching_result_dict = ast.literal_eval(match.matching_result)  # safely parse Python dict string
+        except Exception as e:
+            print("Error parsing matching_result:", e)
+
+    return jsonify({
+        "status": "success",
+        "data": {
+            "id": match.id,
+            "user_name": match.user_name,
+            "user_dob": match.user_dob,
+            "partner_name": match.partner_name,
+            "total_guna": match.total_guna,
+            "matching_result": matching_result_dict  # send as actual JSON object
+        }
+    })

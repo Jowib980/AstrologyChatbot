@@ -4,6 +4,8 @@ from app.utils.transit import transit_interpretations
 from app.utils.calculate_chart import calculate_chart
 from app.utils.kundalichart import generate_kundli_image_jpg
 from datetime import datetime
+from app import db
+from app.models import TransitReport
 
 bp = Blueprint("transit", __name__)
 
@@ -25,13 +27,18 @@ def transit_api():
         dob = data.get("dob")
         tob = data.get("tob")
         place = data.get("place")
+        user_id = data.get("user_id")
 
         if not all([name, dob, tob, place]):
             return jsonify({"error": "Missing required parameters"}), 400
 
+        # Get current date & time
+        now = datetime.utcnow()
+        current_date = now.strftime("%Y-%m-%d")
+        current_time = now.strftime("%H:%M")
+
         # 1. Get CURRENT planetary positions (transit)
-        now = datetime.utcnow().strftime("%Y-%m-%d %H:%M")
-        chart = calculate_chart(now.split(" ")[0], now.split(" ")[1], place)
+        chart = calculate_chart(current_date, current_time, place)
         ascendant_sign = chart["ascendant_sign"]
 
         transit_results = []
@@ -39,8 +46,8 @@ def transit_api():
         # Prepare Kundli data for transit chart image
         kundli_data = {
             "name": f"Transit Chart for {name}",
-            "dob": now.split(" ")[0],
-            "tob": now.split(" ")[1],
+            "dob": current_date,
+            "tob": current_time,
             "place": place,
             "Ascendant": {"rashi": ascendant_sign}
         }
@@ -66,7 +73,21 @@ def transit_api():
         # 3. Generate transit chart image
         chart_img_base64 = generate_kundli_image_jpg(kundli_data, chart_type="transit")
 
-        # 4. Return JSON response
+        # 4. Save data in DB
+        report = TransitReport(
+            user_id=user_id,
+            name=name,
+            place=place,
+            ascendant=ascendant_sign,
+            transit_date=current_date,
+            transit_time=current_time,
+            transits=transit_results,
+            chart_image_base64=chart_img_base64
+        )
+        db.session.add(report)
+        db.session.commit()
+
+        # 5. Return JSON response
         return jsonify({
             "name": name,
             "ascendant": ascendant_sign,
@@ -76,3 +97,4 @@ def transit_api():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+

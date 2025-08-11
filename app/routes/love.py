@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify
 from app.utils.astrology import get_zodiac_positions
 from app.utils.nakshatra import generate_nakshatra_prediction, nakshatra_traits
+from app import db
+from app.models import LoveReport
 
 bp = Blueprint('love', __name__)
 
@@ -75,10 +77,11 @@ def generate_love_text(name, gender, nakshatra, pada, planets, nakshatra_info):
 {marriage_tone} A tastefully arranged and emotionally secure home environment is essential for your romantic happiness.
 """.strip()
 
-# Flask route
 @bp.route('/love', methods=['POST'])
 def love_prediction():
     data = request.get_json()
+
+    user_id = data.get("user_id")
     name = data.get("name")
     dob = data.get("dob")
     tob = data.get("tob")
@@ -97,30 +100,37 @@ def love_prediction():
         pada = nakshatra_data["pada"]
 
         planets = get_zodiac_positions(dob, tob, place)
-        print("DEBUG PLANETS:", planets)
-
-        print("Incoming Nakshatra:", nakshatra)
-        print("Incoming Pada:", pada)
 
         nakshatra_info = nakshatra_traits.get(nakshatra, {}).get("padas", {}).get(int(pada))
         if not nakshatra_info:
-            print(f"[WARN] Missing traits for {nakshatra} Pada {pada}, using fallback.")
             nakshatra_info = {
                 "personality": "unique and complex",
                 "emotional_traits": "emotionally nuanced and expressive",
                 "ideal_partner": "emotionally understanding and supportive"
             }
-        print(f"DEBUG TRAITS for {nakshatra} Pada {pada}: {nakshatra_info}")
-
 
         love_text = generate_love_text(name, gender, nakshatra, pada, planets, nakshatra_info)
+
+        report = LoveReport(
+            user_id=user_id,
+            name=name,
+            gender=gender,
+            dob=dob,
+            tob=tob,
+            place=place,
+            nakshatra=nakshatra,
+            pada=pada,
+            love_prediction=love_text
+        )
+        db.session.add(report)
+        db.session.commit()
 
         return jsonify({
             "name": name,
             "nakshatra": nakshatra,
             "pada": pada,
             "love_prediction": love_text
-        })
+        }), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500

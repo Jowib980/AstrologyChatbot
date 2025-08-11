@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify, Blueprint
 from flask_cors import CORS
 from app.utils.astrology import get_zodiac_positions, calculate_health_index
+from app import db
+from app.models import HealthReport
 
 bp = Blueprint("health", __name__)
 
@@ -8,9 +10,10 @@ bp = Blueprint("health", __name__)
 def health_index_api():
     data = request.get_json()
 
-    dob = data.get("dob")        # Expected format: YYYY-MM-DD
-    tob = data.get("tob")        # Expected format: HH:MM
-    place = data.get("place")    # e.g., "Delhi, India"
+    dob = data.get("dob")
+    tob = data.get("tob")
+    place = data.get("place")
+    user_id = data.get("user_id")  # optional
 
     if not dob or not tob or not place:
         return jsonify({"error": "Missing dob, tob, or place"}), 400
@@ -21,11 +24,18 @@ def health_index_api():
 
     health_score = calculate_health_index(zodiac_positions)
 
-    response = {
-        "health_index": health_score
-        }
+    # Save to database
+    try:
+        report = HealthReport(
+            user_id=user_id,
+            dob=dob,
+            tob=tob, 
+            place=place,
+            health_index=health_score
+        )
+        db.session.add(report)
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"error": f"Failed to save report: {str(e)}"}), 500
 
-    return jsonify(response), 200
-
-if __name__ == '__main__':
-    app.run(debug=True)
+    return jsonify({"health_index": health_score}), 200

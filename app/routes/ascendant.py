@@ -1,6 +1,9 @@
 from flask import Blueprint, request, jsonify
 from app.utils.calculate_chart import calculate_chart
 from app.utils.ascendant import generate_ascendant_traits
+from app.models import AscendantReport
+from app import db
+import json
 
 bp = Blueprint("ascendant", __name__)
 
@@ -25,6 +28,7 @@ def ascendant_api():
                 "error": f"No traits found for {ascendant_sign}"
             }), 404
 
+
         # Save to database
         report = AscendantReport(
             user_id=user_id,
@@ -33,11 +37,7 @@ def ascendant_api():
             tob=tob,
             place=place,
             ascendant=ascendant_sign,
-            personality=traits.get("personality"),
-            strengths=traits.get("strengths"),
-            weaknesses=traits.get("weaknesses"),
-            career=traits.get("career"),
-            compatibility=traits.get("compatibility"),
+            traits=json.dumps(traits)
         )
         db.session.add(report)
         db.session.commit()

@@ -17,9 +17,6 @@ def create_app():
     bcrypt.init_app(app)
     CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
-    from app.routes.chatbot import bp as chatbot_bp
-    app.register_blueprint(chatbot_bp, url_prefix="/api")
-
     from app.routes.auth import bp as auth_bp
     app.register_blueprint(auth_bp, url_prefix="/api")
 

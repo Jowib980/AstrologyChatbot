@@ -4,8 +4,14 @@ from geopy.geocoders import Nominatim
 from skyfield.api import load, Topos
 import traceback
 from app.utils.kundalichart import generate_kundli_image_jpg
+import base64
+import os
+from app.models import Kundalis
+from app import db
 
 bp = Blueprint("kundali", __name__)
+
+CHARTS_DIR = "static"
 
 rashi_names = [
     "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo",
@@ -119,19 +125,24 @@ def generate_kundli_with_navamsa(dob, tob, place):
         "navamsa_chart": navamsa_chart
     }
 
+
 @bp.route('/kundali', methods=['POST'])
 def api_kundli():
     try:
+        print("Received JSON payload:", request.json)
         data = request.get_json(force=True)
+
         name = data.get("name")
         gender = data.get("gender")
         dob = data.get("dob")
         tob = data.get("tob")
         place = data.get("place")
+        user_id = data.get("user_id")
 
-        if not dob or not tob or not place:
-            return jsonify({"error": "Missing dob, tob, or place"}), 400
+        if not dob or not tob or not place or not user_id:
+            return jsonify({"error": "Missing dob, tob, place, or user_id"}), 400
 
+        # Generate chart data
         charts = generate_kundli_with_navamsa(dob, tob, place)
         if "error" in charts:
             return jsonify(charts), 400
@@ -146,9 +157,38 @@ def api_kundli():
                 "place": place
             })
 
-        # Generate images
-        charts["lagna_chart"]["chart_image_base64"] = generate_kundli_image_jpg(charts["lagna_chart"], chart_type="lagna")
-        charts["navamsa_chart"]["chart_image_base64"] = generate_kundli_image_jpg(charts["navamsa_chart"], chart_type="navamsa")
+        # Generate chart images as base64
+        lagna_b64 = generate_kundli_image_jpg(charts["lagna_chart"], chart_type="lagna")
+        navamsa_b64 = generate_kundli_image_jpg(charts["navamsa_chart"], chart_type="navamsa")
+
+        # Save images to disk
+        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+        lagna_path = os.path.join(CHARTS_DIR, f"lagna_{user_id}_{timestamp}.jpg")
+        navamsa_path = os.path.join(CHARTS_DIR, f"navamsa_{user_id}_{timestamp}.jpg")
+
+        os.makedirs(CHARTS_DIR, exist_ok=True)
+        with open(lagna_path, "wb") as f:
+            f.write(base64.b64decode(lagna_b64))
+        with open(navamsa_path, "wb") as f:
+            f.write(base64.b64decode(navamsa_b64))
+
+        # Save to database
+        kundali = Kundalis(
+            user_id=user_id,
+            name=name,
+            gender=gender,
+            dob=datetime.strptime(dob, "%Y-%m-%d").date(),
+            tob=datetime.strptime(tob, "%H:%M").time(),
+            place=place,
+            lagna_chart_path=lagna_path,
+            navamsa_chart_path=navamsa_path
+        )
+        db.session.add(kundali)
+        db.session.commit()
+
+        # Add base64 to response
+        charts["lagna_chart"]["chart_image_base64"] = lagna_b64
+        charts["navamsa_chart"]["chart_image_base64"] = navamsa_b64
 
         return jsonify(charts)
 

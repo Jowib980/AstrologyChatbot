@@ -1,8 +1,16 @@
 from flask import Blueprint, request, jsonify
 from app.models import User, db  # ✅ import db from models
 from app import bcrypt           # ✅ bcrypt from app/__init__.py
+from datetime import date, datetime
 
 bp = Blueprint("auth", __name__)
+
+
+def format_date(obj):
+    if isinstance(obj, (datetime, date)):
+        return obj.isoformat()
+    return obj
+
 
 @bp.route('/register', methods=['POST'])
 def register():
@@ -22,21 +30,21 @@ def register():
         password_hash=hashed_password,
         dob=data['dob'],
         time_of_birth=data['tob'],
-        place_of_birth=data['place']
+        place_of_birth=data['place'],
+        gender=data['gender']
     )
     db.session.add(new_user)
     db.session.commit()
-
-    dob_str = new_user.dob.strftime("%Y-%m-%d") if new_user.dob else None
 
     # Return user data in response (excluding password)
     user_data = {
         "id": new_user.id,
         "name": new_user.name,
         "email": new_user.email,
-        "dob": new_user.dob_str,
+        "dob": format_date(new_user.dob),
         "tob": new_user.time_of_birth,
-        "place": new_user.place_of_birth
+        "place": new_user.place_of_birth,
+        "gender": new_user.gender
     }
 
     return jsonify({
@@ -56,6 +64,10 @@ def login():
             "message": "Login successful",
             "user_id": user.id,
             "name": user.name,
-            "email": user.email
+            "email": user.email,
+            "dob": format_date(user.dob),
+            "tob": user.time_of_birth,
+            "place": user.place_of_birth,
+            "gender": user.gender
         })
     return jsonify({"error": "Invalid email or password"}), 401
