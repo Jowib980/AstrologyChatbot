@@ -1,8 +1,10 @@
 from flask import Blueprint, request, jsonify
 from app.utils.astrology import get_zodiac_positions
-from app.utils.nakshatra import generate_nakshatra_prediction, nakshatra_traits
+from app.utils.nakshatra import generate_nakshatra_prediction
 from app import db
 from app.models import LoveReport
+from app.models import Nakshatra, Pada
+import json
 
 bp = Blueprint('love', __name__)
 
@@ -93,23 +95,41 @@ def love_prediction():
 
     try:
         nakshatra_data = generate_nakshatra_prediction(dob, tob, place)
-        if not nakshatra_data:
-            return jsonify({"error": "Could not determine Nakshatra"}), 500
+        if "error" in nakshatra_data:
+            return jsonify({"error": nakshatra_data["error"]}), 400
 
-        nakshatra = nakshatra_data["nakshatra"]
-        pada = nakshatra_data["pada"]
+        nakshatra_name = nakshatra_data["nakshatra"]
+        pada_num = int(nakshatra_data["pada"])
 
-        planets = get_zodiac_positions(dob, tob, place)
+        # Query Nakshatra info from DB
+        nakshatra_obj = Nakshatra.query.filter_by(name=nakshatra_name).first()
+        if not nakshatra_obj:
+            return jsonify({"error": f"Nakshatra {nakshatra_name} not found in DB"}), 404
 
-        nakshatra_info = nakshatra_traits.get(nakshatra, {}).get("padas", {}).get(int(pada))
-        if not nakshatra_info:
+        # Query pada info from DB
+        pada_obj = Pada.query.filter_by(nakshatra_id=nakshatra_obj.id, pada_number=pada_num).first()
+
+        if pada_obj:
+            nakshatra_info = {
+                "personality": pada_obj.personality,
+                "strengths": json.loads(pada_obj.strengths or "[]"),
+                "weaknesses": json.loads(pada_obj.weaknesses or "[]"),
+                "career": json.loads(pada_obj.career or "[]"),
+                "emotional_traits": pada_obj.emotional_traits,
+                "ideal_partner": pada_obj.ideal_partner
+            }
+        else:
+            # fallback if no pada data found
             nakshatra_info = {
                 "personality": "unique and complex",
                 "emotional_traits": "emotionally nuanced and expressive",
                 "ideal_partner": "emotionally understanding and supportive"
             }
 
-        love_text = generate_love_text(name, gender, nakshatra, pada, planets, nakshatra_info)
+        # Get planetary positions (Moon, Venus, Mars)
+        planets = get_zodiac_positions(dob, tob, place)
+
+        love_text = generate_love_text(name, gender, nakshatra_name, pada_num, planets, nakshatra_info)
 
         report = LoveReport(
             user_id=user_id,
@@ -118,8 +138,8 @@ def love_prediction():
             dob=dob,
             tob=tob,
             place=place,
-            nakshatra=nakshatra,
-            pada=pada,
+            nakshatra=nakshatra_name,
+            pada=pada_num,
             love_prediction=love_text
         )
         db.session.add(report)
@@ -127,8 +147,8 @@ def love_prediction():
 
         return jsonify({
             "name": name,
-            "nakshatra": nakshatra,
-            "pada": pada,
+            "nakshatra": nakshatra_name,
+            "pada": pada_num,
             "love_prediction": love_text
         }), 200
 

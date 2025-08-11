@@ -22,6 +22,8 @@ def nakshatra_api():
 
     result = generate_nakshatra_prediction(dob, tob, place)
 
+    print(result)
+
     try:
         report = NakshatraReport(
             user_id=user_id,
@@ -35,7 +37,7 @@ def nakshatra_api():
             weaknesses=json.dumps(result.get("weaknesses")),
             ideal_partner=result.get("ideal_partner"),
             keywords=json.dumps(result.get("keywords")),
-            prediction=result.get("prediction")
+            career=json.dumps(result.get("career"))
         )
 
         db.session.add(report)

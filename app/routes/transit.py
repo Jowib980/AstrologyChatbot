@@ -1,11 +1,10 @@
 # app/routes/transit.py
 from flask import Blueprint, request, jsonify
-from app.utils.transit import transit_interpretations
 from app.utils.calculate_chart import calculate_chart
 from app.utils.kundalichart import generate_kundli_image_jpg
 from datetime import datetime
 from app import db
-from app.models import TransitReport
+from app.models import TransitReport, TransitInterpretation  
 
 bp = Blueprint("transit", __name__)
 
@@ -60,8 +59,12 @@ def transit_api():
             # Add to kundli image data
             kundli_data[planet] = {"rashi": sign}
 
-            # Get interpretation text
-            interp = transit_interpretations.get(planet, {}).get(house, "No interpretation available.")
+            interp_obj = TransitInterpretation.query.filter_by(planet=planet, house_number=house).first()
+            
+            if interp_obj:
+                interp = interp_obj.interpretation
+            else:
+                interp = "No interpretation available."
 
             transit_results.append({
                 "planet": planet,

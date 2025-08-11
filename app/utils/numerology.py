@@ -1,6 +1,6 @@
-# numerology.py
 from datetime import datetime
 import re
+from app.models import NumerologyNumber
 
 # Pythagorean letter to number mapping
 LETTER_TO_NUMBER = {
@@ -45,194 +45,50 @@ radical_meanings = {
     9: "Compassionate, humanitarian, emotional, idealistic."
 }
 
-numerology_data = {
-    1: {
-        "favourable_sign": "Leo",
-        "favourable_alphabets": "A, I, J, Q, Y",
-        "gemstone": "Ruby",
-        "favourable_days": "Sunday, Monday",
-        "favourable_number": "1, 3, 10, 19, 28",
-        "direction": "East",
-        "auspicious_color": "Red, Orange",
-        "ruling_planet": "Sun",
-        "god_goddess": "Surya (Sun God)",
-        "fast": "Sunday",
-        "favourable_dates": "1st, 10th, 19th, 28th",
-        "mantra": "ॐ घृणिः सूर्याय नमः",
-        "personality": "Leader, independent, ambitious.",
-        "career": "Leadership, entrepreneurship, management.",
-        "compatible": [1, 2, 4],
-        "dos": ["Take initiative", "Lead by example"],
-        "donts": ["Avoid arrogance", "Don’t dominate others"],
-    },
-    2: {
-        "favourable_sign": "Cancer",
-        "favourable_alphabets": "B, K, R",
-        "gemstone": "Pearl",
-        "favourable_days": "Monday, Friday",
-        "favourable_number": "2, 11, 20, 29",
-        "direction": "North-West",
-        "auspicious_color": "White, Cream",
-        "ruling_planet": "Moon",
-        "god_goddess": "Parvati, Chandra Dev",
-        "fast": "Monday",
-        "favourable_dates": "2nd, 11th, 20th, 29th",
-        "mantra": "ॐ चन्द्राय नमः",
-        "personality": "Diplomatic, sensitive, cooperative.",
-        "career": "Counseling, teaching, arts, HR.",
-        "compatible": [2, 4, 8],
-        "dos": ["Be kind", "Stay calm"],
-        "donts": ["Avoid overthinking", "Don't depend too much"],
-    },
-    3: {
-        "favourable_sign": "Sagittarius, Pisces",
-        "favourable_alphabets": "C, G, L, S",
-        "gemstone": "Yellow Sapphire",
-        "favourable_days": "Thursday, Sunday",
-        "favourable_number": "3, 12, 21, 30",
-        "direction": "North-East",
-        "auspicious_color": "Yellow, Gold",
-        "ruling_planet": "Jupiter",
-        "god_goddess": "Brihaspati, Vishnu",
-        "fast": "Thursday",
-        "favourable_dates": "3rd, 12th, 21st, 30th",
-        "mantra": "ॐ बृं बृहस्पतये नमः",
-        "personality": "Creative, expressive, optimistic.",
-        "career": "Writing, acting, media, public speaking.",
-        "compatible": [3, 6, 9],
-        "dos": ["Express yourself", "Follow creative interests"],
-        "donts": ["Avoid being scattered", "Don’t procrastinate"],
-    },
-    4: {
-        "favourable_sign": "Aquarius",
-        "favourable_alphabets": "D, M, T",
-        "gemstone": "Hessonite (Gomed)",
-        "favourable_days": "Saturday, Sunday",
-        "favourable_number": "4, 13, 22, 31",
-        "direction": "South-West",
-        "auspicious_color": "Electric Blue, Grey",
-        "ruling_planet": "Rahu",
-        "god_goddess": "Durga, Lord Ganesha",
-        "fast": "Saturday",
-        "favourable_dates": "4th, 13th, 22nd, 31st",
-        "mantra": "ॐ रां राहवे नमः",
-        "personality": "Practical, disciplined, loyal.",
-        "career": "Engineering, construction, security.",
-        "compatible": [1, 5, 7],
-        "dos": ["Stick to routine", "Be consistent"],
-        "donts": ["Avoid stubbornness", "Don’t resist change"],
-    },
-    5: {
-        "favourable_sign": "Gemini, Virgo",
-        "favourable_alphabets": "E, H, N, X",
-        "gemstone": "Emerald",
-        "favourable_days": "Wednesday, Friday",
-        "favourable_number": "5, 14, 23",
-        "direction": "North",
-        "auspicious_color": "Green, Light Blue",
-        "ruling_planet": "Mercury",
-        "god_goddess": "Narayan, Vishnu",
-        "fast": "Wednesday",
-        "favourable_dates": "5th, 14th, 23rd",
-        "mantra": "ॐ बुं बुधाय नमः",
-        "personality": "Adventurous, dynamic, persuasive.",
-        "career": "Sales, marketing, travel, media.",
-        "compatible": [1, 3, 5],
-        "dos": ["Take smart risks", "Stay adaptable"],
-        "donts": ["Avoid impulsive decisions", "Don’t overindulge"],
-    },
-    6: {
-        "favourable_sign": "Taurus, Libra",
-        "favourable_alphabets": "U, V, W",
-        "gemstone": "Diamond",
-        "favourable_days": "Friday, Tuesday",
-        "favourable_number": "6, 15, 24",
-        "direction": "South-East",
-        "auspicious_color": "Pink, White",
-        "ruling_planet": "Venus",
-        "god_goddess": "Lakshmi, Shukracharya",
-        "fast": "Friday",
-        "favourable_dates": "6th, 15th, 24th",
-        "mantra": "ॐ शुं शुक्राय नमः",
-        "personality": "Responsible, nurturing, harmonious.",
-        "career": "Education, beauty, healthcare, art.",
-        "compatible": [3, 6, 9],
-        "dos": ["Care for others", "Stay balanced"],
-        "donts": ["Avoid being too controlling", "Don’t ignore self-care"],
-    },
-    7: {
-        "favourable_sign": "Pisces, Cancer",
-        "favourable_alphabets": "O, Z",
-        "gemstone": "Cat’s Eye",
-        "favourable_days": "Monday, Thursday",
-        "favourable_number": "7, 16, 25",
-        "direction": "West",
-        "auspicious_color": "Violet, Purple",
-        "ruling_planet": "Ketu",
-        "god_goddess": "Ganesh, Lord Shiva",
-        "fast": "Tuesday",
-        "favourable_dates": "7th, 16th, 25th",
-        "mantra": "ॐ कें केतवे नमः",
-        "personality": "Spiritual, analytical, introspective.",
-        "career": "Research, IT, psychology, philosophy.",
-        "compatible": [2, 4, 7],
-        "dos": ["Trust your intuition", "Spend time in nature"],
-        "donts": ["Avoid isolation", "Don’t be too skeptical"],
-    },
-    8: {
-        "favourable_sign": "Capricorn, Aquarius",
-        "favourable_alphabets": "F, P",
-        "gemstone": "Blue Sapphire",
-        "favourable_days": "Saturday, Wednesday",
-        "favourable_number": "8, 17, 26",
-        "direction": "South",
-        "auspicious_color": "Dark Blue, Black",
-        "ruling_planet": "Saturn",
-        "god_goddess": "Shani Dev, Hanuman",
-        "fast": "Saturday",
-        "favourable_dates": "8th, 17th, 26th",
-        "mantra": "ॐ शं शनैश्चराय नमः",
-        "personality": "Ambitious, authoritative, goal-driven.",
-        "career": "Business, politics, finance, real estate.",
-        "compatible": [2, 4, 8],
-        "dos": ["Plan long-term", "Use power wisely"],
-        "donts": ["Avoid material obsession", "Don’t suppress emotions"],
-    },
-    9: {
-        "favourable_sign": "Aries, Scorpio",
-        "favourable_alphabets": "M, T",
-        "gemstone": "Coral",
-        "favourable_days": "Tuesday, Sunday",
-        "favourable_number": "9, 18, 27",
-        "direction": "South",
-        "auspicious_color": "Red, Maroon",
-        "ruling_planet": "Mars",
-        "god_goddess": "Hanuman, Durga",
-        "fast": "Tuesday",
-        "favourable_dates": "9th, 18th, 27th",
-        "mantra": "ॐ क्रां क्रीं क्रौं सः भौमाय नमः",
-        "personality": "Compassionate, generous, emotional.",
-        "career": "NGOs, medicine, spirituality, counseling.",
-        "compatible": [3, 6, 9],
-        "dos": ["Help others", "Practice forgiveness"],
-        "donts": ["Avoid being overly emotional", "Don’t hold grudges"],
-    }
-}
-
-# Destiny and Name meanings can be similar or extended later
 
 def generate_numerology_report(name, dob):
     radical = get_radical_number(dob)
     destiny = get_destiny_number(dob)
     name_no = get_name_number(name)
 
+    # Fetch data from DB for each number
+    radical_entry = NumerologyNumber.query.filter_by(number=radical).first()
+    destiny_entry = NumerologyNumber.query.filter_by(number=destiny).first()
+    name_entry = NumerologyNumber.query.filter_by(number=name_no).first()
+
+    def entry_to_dict(entry):
+        if not entry:
+            return {}
+        return {
+            "favourable_sign": entry.favourable_sign,
+            "favourable_alphabets": entry.favourable_alphabets,
+            "gemstone": entry.gemstone,
+            "favourable_days": entry.favourable_days,
+            "favourable_number": entry.favourable_number,
+            "direction": entry.direction,
+            "auspicious_color": entry.auspicious_color,
+            "ruling_planet": entry.ruling_planet,
+            "god_goddess": entry.god_goddess,
+            "fast": entry.fast,
+            "favourable_dates": entry.favourable_dates,
+            "mantra": entry.mantra,
+            "personality": entry.personality,
+            "career": entry.career,
+            "dos": [dos.advice for dos in entry.dos],
+            "donts": [dont.advice for dont in entry.donts],
+            "compatibles": [comp.compatible_number for comp in entry.compatibles]
+        }
+
     return {
         "name": name,
         "dob": dob,
         "radical_number": radical,
-        "radical_meaning": radical_meanings.get(radical, "Not defined."),
+        "radical_data": entry_to_dict(radical_entry),
         "destiny_number": destiny,
-        "destiny_meaning": radical_meanings.get(destiny, "Not defined."),
+        "destiny_data": entry_to_dict(destiny_entry),
         "name_number": name_no,
+        "name_data": entry_to_dict(name_entry),
+        "radical_meaning": radical_meanings.get(radical, "Not defined."),
+        "destiny_meaning": radical_meanings.get(destiny, "Not defined."),
         "name_meaning": radical_meanings.get(name_no, "Not defined.")
     }
