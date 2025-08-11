@@ -1,0 +1,9 @@
+flask>=3.1.1
+flask-bcrypt>=1.0.1
+flask-cors>=6.0.1
+flask-sqlalchemy>=3.1.1
+transformers>=4.53.3
+datasets
+torch>=2.7.1
+sentencepiece
+scipy
