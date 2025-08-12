@@ -1,0 +1,174 @@
+[                                 ]   0% de440s.bsp[#################################] 100% de440s.bsp
+Traceback (most recent call last):
+  File "/home/aweshwep/astrology.jowibtechnologies.com/app/routes/kundali.py", line 161, in api_kundli
+    lagna_b64 = generate_kundli_image_jpg(charts["lagna_chart"], chart_type="lagna")
+  File "/home/aweshwep/astrology.jowibtechnologies.com/app/utils/kundalichart.py", line 29, in generate_kundli_image_jpg
+    img = Image.open(template_path).convert("RGB")
+  File "/home/aweshwep/virtualenv/astrology.jowibtechnologies.com/3.10/lib64/python3.10/site-packages/PIL/Image.py", line 3513, in open
+    fp = builtins.open(filename, "rb")
+FileNotFoundError: [Errno 2] No such file or directory: 'app/static/kundali_north.jpg'
+Received JSON payload: {'name': 'Admin', 'gender': 'Female', 'dob': '2002-03-06', 'tob': '19:05', 'place': 'Nadaun', 'user_id': '1'}
+Traceback (most recent call last):
+  File "/home/aweshwep/astrology.jowibtechnologies.com/app/routes/kundali.py", line 161, in api_kundli
+    lagna_b64 = generate_kundli_image_jpg(charts["lagna_chart"], chart_type="lagna")
+  File "/home/aweshwep/astrology.jowibtechnologies.com/app/utils/kundalichart.py", line 29, in generate_kundli_image_jpg
+    img = Image.open(template_path).convert("RGB")
+  File "/home/aweshwep/virtualenv/astrology.jowibtechnologies.com/3.10/lib64/python3.10/site-packages/PIL/Image.py", line 3513, in open
+    fp = builtins.open(filename, "rb")
+FileNotFoundError: [Errno 2] No such file or directory: 'app/static/kundali_north.jpg'
+Traceback (most recent call last):
+  File "/home/aweshwep/astrology.jowibtechnologies.com/app/routes/kundali.py", line 161, in api_kundli
+    lagna_b64 = generate_kundli_image_jpg(charts["lagna_chart"], chart_type="lagna")
+  File "/home/aweshwep/astrology.jowibtechnologies.com/app/utils/kundalichart.py", line 29, in generate_kundli_image_jpg
+    img = Image.open(template_path).convert("RGB")
+  File "/home/aweshwep/virtualenv/astrology.jowibtechnologies.com/3.10/lib64/python3.10/site-packages/PIL/Image.py", line 3513, in open
+    fp = builtins.open(filename, "rb")
+FileNotFoundError: [Errno 2] No such file or directory: 'app/static/kundali_north.jpg'
+Received JSON payload: {'name': 'Admin', 'gender': 'Female', 'dob': '2002-03-06', 'tob': '19:05', 'place': 'Nadaun', 'user_id': '1'}
+Received JSON payload: {'name': 'Admin', 'gender': 'Female', 'dob': '2002-03-06', 'tob': '19:05', 'place': 'Nadaun', 'user_id': '1'}
+Received JSON payload: {'name': 'Admin', 'gender': 'Female', 'dob': '2002-03-06', 'tob': '19:05', 'place': 'Nadaun', 'user_id': '1'}
+{'nakshatra': 'Purva Ashadha', 'pada': 4, 'personality': 'Spiritual and generous.', 'strengths': ['Charity', 'Philosophy'], 'weaknesses': ['Naivety'], 'career': ['Priest', 'Guru'], 'emotional_traits': 'emotionally intense but caring', 'ideal_partner': 'an adventurous and independent soul', 'keywords': ['invincibility', 'ambition', 'expansion']}
+Received JSON payload: {'name': 'Admin', 'gender': 'Female', 'dob': '2002-03-06', 'tob': '19:05', 'place': 'Nadaun', 'user_id': '1'}
+Received JSON payload: {'name': 'Admin', 'gender': 'Female', 'dob': '2002-03-06', 'tob': '19:05', 'place': 'Nadaun', 'user_id': '1'}
+Received JSON payload: {'name': 'Admin', 'gender': 'Female', 'dob': '2002-03-06', 'tob': '19:05', 'place': 'Nadaun', 'user_id': '1'}
+Traceback (most recent call last):
+  File "/home/aweshwep/astrology.jowibtechnologies.com/passenger_wsgi.py", line 8, in <module>
+    wsgi = imp.load_source('wsgi', 'run.py')
+  File "/opt/alt/python310/lib64/python3.10/imp.py", line 172, in load_source
+    module = _load(spec)
+  File "<frozen importlib._bootstrap>", line 719, in _load
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "run.py", line 1, in <module>
+    from app import create_app
+  File "/home/aweshwep/astrology.jowibtechnologies.com/app/__init__.py", line 15, in <module>
+    app.config['JSON_AS_ASCII'] = False
+NameError: name 'app' is not defined
+Traceback (most recent call last):
+  File "/home/aweshwep/astrology.jowibtechnologies.com/passenger_wsgi.py", line 8, in <module>
+    wsgi = imp.load_source('wsgi', 'run.py')
+  File "/opt/alt/python310/lib64/python3.10/imp.py", line 172, in load_source
+    module = _load(spec)
+  File "<frozen importlib._bootstrap>", line 719, in _load
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "run.py", line 1, in <module>
+    from app import create_app
+  File "/home/aweshwep/astrology.jowibtechnologies.com/app/__init__.py", line 15, in <module>
+    app.config['JSON_AS_ASCII'] = False
+NameError: name 'app' is not defined
+Traceback (most recent call last):
+  File "/home/aweshwep/astrology.jowibtechnologies.com/passenger_wsgi.py", line 8, in <module>
+    wsgi = imp.load_source('wsgi', 'run.py')
+  File "/opt/alt/python310/lib64/python3.10/imp.py", line 172, in load_source
+    module = _load(spec)
+  File "<frozen importlib._bootstrap>", line 719, in _load
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "run.py", line 1, in <module>
+    from app import create_app
+  File "/home/aweshwep/astrology.jowibtechnologies.com/app/__init__.py", line 15, in <module>
+    app.config['JSON_AS_ASCII'] = False
+NameError: name 'app' is not defined
+Traceback (most recent call last):
+  File "/home/aweshwep/astrology.jowibtechnologies.com/passenger_wsgi.py", line 8, in <module>
+    wsgi = imp.load_source('wsgi', 'run.py')
+  File "/opt/alt/python310/lib64/python3.10/imp.py", line 172, in load_source
+    module = _load(spec)
+  File "<frozen importlib._bootstrap>", line 719, in _load
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "run.py", line 1, in <module>
+    from app import create_app
+  File "/home/aweshwep/astrology.jowibtechnologies.com/app/__init__.py", line 15, in <module>
+    app.config['JSON_AS_ASCII'] = False
+NameError: name 'app' is not defined
+Traceback (most recent call last):
+  File "/home/aweshwep/astrology.jowibtechnologies.com/passenger_wsgi.py", line 8, in <module>
+    wsgi = imp.load_source('wsgi', 'run.py')
+  File "/opt/alt/python310/lib64/python3.10/imp.py", line 172, in load_source
+    module = _load(spec)
+  File "<frozen importlib._bootstrap>", line 719, in _load
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "run.py", line 1, in <module>
+    from app import create_app
+  File "/home/aweshwep/astrology.jowibtechnologies.com/app/__init__.py", line 15, in <module>
+    app.config['JSON_AS_ASCII'] = False
+NameError: name 'app' is not defined
+Traceback (most recent call last):
+  File "/home/aweshwep/astrology.jowibtechnologies.com/passenger_wsgi.py", line 8, in <module>
+    wsgi = imp.load_source('wsgi', 'run.py')
+  File "/opt/alt/python310/lib64/python3.10/imp.py", line 172, in load_source
+    module = _load(spec)
+  File "<frozen importlib._bootstrap>", line 719, in _load
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "run.py", line 1, in <module>
+    from app import create_app
+  File "/home/aweshwep/astrology.jowibtechnologies.com/app/__init__.py", line 15, in <module>
+    app.config['JSON_AS_ASCII'] = False
+NameError: name 'app' is not defined
+Traceback (most recent call last):
+  File "/home/aweshwep/astrology.jowibtechnologies.com/passenger_wsgi.py", line 8, in <module>
+    wsgi = imp.load_source('wsgi', 'run.py')
+  File "/opt/alt/python310/lib64/python3.10/imp.py", line 172, in load_source
+    module = _load(spec)
+  File "<frozen importlib._bootstrap>", line 719, in _load
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "run.py", line 1, in <module>
+    from app import create_app
+  File "/home/aweshwep/astrology.jowibtechnologies.com/app/__init__.py", line 15, in <module>
+    app.config['JSON_AS_ASCII'] = False
+NameError: name 'app' is not defined
+Traceback (most recent call last):
+  File "/home/aweshwep/astrology.jowibtechnologies.com/passenger_wsgi.py", line 8, in <module>
+    wsgi = imp.load_source('wsgi', 'run.py')
+  File "/opt/alt/python310/lib64/python3.10/imp.py", line 172, in load_source
+    module = _load(spec)
+  File "<frozen importlib._bootstrap>", line 719, in _load
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "run.py", line 1, in <module>
+    from app import create_app
+  File "/home/aweshwep/astrology.jowibtechnologies.com/app/__init__.py", line 15, in <module>
+    app.config['JSON_AS_ASCII'] = False
+NameError: name 'app' is not defined
+Traceback (most recent call last):
+  File "/home/aweshwep/astrology.jowibtechnologies.com/passenger_wsgi.py", line 8, in <module>
+    wsgi = imp.load_source('wsgi', 'run.py')
+  File "/opt/alt/python310/lib64/python3.10/imp.py", line 172, in load_source
+    module = _load(spec)
+  File "<frozen importlib._bootstrap>", line 719, in _load
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "run.py", line 9, in <module>
+    app.config['JSON_AS_ASCII'] = False
+NameError: name 'app' is not defined
+Traceback (most recent call last):
+  File "/home/aweshwep/astrology.jowibtechnologies.com/passenger_wsgi.py", line 8, in <module>
+    wsgi = imp.load_source('wsgi', 'run.py')
+  File "/opt/alt/python310/lib64/python3.10/imp.py", line 172, in load_source
+    module = _load(spec)
+  File "<frozen importlib._bootstrap>", line 719, in _load
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "run.py", line 9, in <module>
+    app.config['JSON_AS_ASCII'] = False
+NameError: name 'app' is not defined
+{'name': 'Admin', 'dob': '2002-03-06', 'radical_number': 6, 'radical_data': {'favourable_sign': 'Taurus, Libra', 'favourable_alphabets': 'U, V, W', 'gemstone': 'Diamond', 'favourable_days': 'Friday, Tuesday', 'favourable_number': '6, 15, 24', 'direction': 'South-East', 'auspicious_color': 'Pink, White', 'ruling_planet': 'Venus', 'god_goddess': 'Lakshmi, Shukracharya', 'fast': 'Friday', 'favourable_dates': '6th, 15th, 24th', 'mantra': 'ॐ शुं शुक्राय नमः', 'personality': 'Responsible, nurturing, harmonious.', 'career': 'Education, beauty, healthcare, art.', 'dos': ['Care for others', 'Stay balanced'], 'donts': ['Avoid being too controlling', 'Don’t ignore self-care'], 'compatibles': [3, 6, 9]}, 'destiny_number': 4, 'destiny_data': {'favourable_sign': 'Aquarius', 'favourable_alphabets': 'D, M, T', 'gemstone': 'Hessonite (Gomed)', 'favourable_days': 'Saturday, Sunday', 'favourable_number': '4, 13, 22, 31', 'direction': 'South-West', 'auspicious_color': 'Electric Blue, Grey', 'ruling_planet': 'Rahu', 'god_goddess': 'Durga, Lord Ganesha', 'fast': 'Saturday', 'favourable_dates': '4th, 13th, 22nd, 31st', 'mantra': 'ॐ रां राहवे नमः', 'personality': 'Practical, disciplined, loyal.', 'career': 'Engineering, construction, security.', 'dos': ['Stick to routine', 'Be consistent'], 'donts': ['Avoid stubbornness', 'Don’t resist change'], 'compatibles': [1, 5, 7]}, 'name_number': 5, 'name_data': {'favourable_sign': 'Gemini, Virgo', 'favourable_alphabets': 'E, H, N, X', 'gemstone': 'Emerald', 'favourable_days': 'Wednesday, Friday', 'favourable_number': '5, 14, 23', 'direction': 'North', 'auspicious_color': 'Green, Light Blue', 'ruling_planet': 'Mercury', 'god_goddess': 'Narayan, Vishnu', 'fast': 'Wednesday', 'favourable_dates': '5th, 14th, 23rd', 'mantra': 'ॐ बुं बुधाय नमः', 'personality': 'Adventurous, dynamic, persuasive.', 'career': 'Sales, marketing, travel, media.', 'dos': ['Take smart risks', 'Stay adaptable'], 'donts': ['Avoid impulsive decisions', 'Don’t overindulge'], 'compatibles': [1, 3, 5]}, 'radical_meaning': 'Responsible, nurturing, family-oriented, artistic.', 'destiny_meaning': 'Practical, hardworking, disciplined, stable.', 'name_meaning': 'Adventurous, versatile, energetic, freedom-loving.', 'numerology_attributes': {'favourable_sign': 'Taurus, Libra', 'favourable_alphabets': 'U, V, W', 'gemstone': 'Diamond', 'favourable_days': 'Friday, Tuesday', 'favourable_number': '6, 15, 24', 'direction': 'South-East', 'auspicious_color': 'Pink, White', 'ruling_planet': 'Venus', 'god_goddess': 'Lakshmi, Shukracharya', 'fast': 'Friday', 'favourable_dates': '6th, 15th, 24th', 'mantra': 'ॐ शुं शुक्राय नमः', 'personality': 'Responsible, nurturing, harmonious.', 'career': 'Education, beauty, healthcare, art.', 'dos': ['Care for others', 'Stay balanced'], 'donts': ['Avoid being too controlling', 'Don’t ignore self-care'], 'compatibles': [3, 6, 9]}}
+[                                 ]   0% de421.bsp[#################################] 100% de421.bsp
+{'nakshatra': 'Purva Ashadha', 'pada': 4, 'personality': 'Spiritual and generous.', 'strengths': ['Charity', 'Philosophy'], 'weaknesses': ['Naivety'], 'career': ['Priest', 'Guru'], 'emotional_traits': 'emotionally intense but caring', 'ideal_partner': 'an adventurous and independent soul', 'keywords': ['invincibility', 'ambition', 'expansion']}
+{'nakshatra': 'Purva Ashadha', 'pada': 4, 'personality': 'Spiritual and generous.', 'strengths': ['Charity', 'Philosophy'], 'weaknesses': ['Naivety'], 'career': ['Priest', 'Guru'], 'emotional_traits': 'emotionally intense but caring', 'ideal_partner': 'an adventurous and independent soul', 'keywords': ['invincibility', 'ambition', 'expansion']}
+Received JSON payload: {'name': 'Admin', 'gender': 'Female', 'dob': '2002-03-06', 'tob': '19:05', 'place': 'Nadaun', 'user_id': '1'}

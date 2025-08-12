@@ -1,0 +1,156 @@
+from flask import Blueprint, request, jsonify
+from app.utils.astrology import get_zodiac_positions
+from app.utils.nakshatra import generate_nakshatra_prediction
+from app import db
+from app.models import LoveReport
+from app.models import Nakshatra, Pada
+import json
+
+bp = Blueprint('love', __name__)
+
+# Venus traits by sign
+def describe_venus_traits(sign):
+    traits = {
+        "Aries": "Confident, energetic, enthusiastic, independent, impulsive, passionate, direct, spontaneous in love and sometimes impatient",
+        "Taurus": "romantic, sensual, and loyal",
+        "Gemini": "playful, witty, and intellectually curious",
+        "Cancer": "nurturing, protective, and emotionally deep",
+        "Leo": "dramatic, affectionate, and warm-hearted",
+        "Virgo": "thoughtful, attentive, and detail-oriented",
+        "Libra": "graceful, charming, and relationship-focused",
+        "Scorpio": "intense, magnetic, and emotionally powerful",
+        "Sagittarius": "adventurous, open-hearted, and freedom-loving",
+        "Capricorn": "reserved, committed, and loyal in a practical way",
+        "Aquarius": "unconventional, detached but loyal, and freedom-loving",
+        "Pisces": "dreamy, romantic, and emotionally intuitive"
+    }
+    return traits.get(sign, "unique and complex in love")
+
+# Mars traits by sign
+def describe_mars_traits(sign):
+    traits = {
+        "Aries": "bold, energetic, and impulsive",
+        "Taurus": "steady, sensual, and persistent",
+        "Gemini": "versatile, flirty, and communicative",
+        "Cancer": "emotionally driven, protective, and moody",
+        "Leo": "passionate, proud, and expressive",
+        "Virgo": "precise, thoughtful, and reserved",
+        "Libra": "charming, balanced, and diplomatic",
+        "Scorpio": "intense, powerful, and magnetic",
+        "Sagittarius": "adventurous, independent, and restless",
+        "Capricorn": "disciplined, strategic, and patient",
+        "Aquarius": "original, unpredictable, and rational",
+        "Pisces": "imaginative, sensitive, and romantic"
+    }
+    return traits.get(sign, "dynamic in your own way")
+
+# Main love paragraph generator
+def generate_love_text(name, gender, nakshatra, pada, planets, nakshatra_info):
+    moon_sign = planets.get("Moon", "Unknown")
+    venus_sign = planets.get("Venus", "Unknown")
+    mars_sign = planets.get("Mars", "Unknown")
+
+    personality = nakshatra_info.get("personality", "insightful and unique")
+    emotional = nakshatra_info.get("emotional_traits", "emotionally intense and receptive")
+    partner = nakshatra_info.get("ideal_partner", "emotionally supportive and compatible")
+
+    intro = f"{name}, your emotional world is influenced by the Moon in {moon_sign}, giving you a {emotional.lower()} nature."
+    
+    marriage_tone = (
+        "You are likely to attract a partner who is expressive and emotionally understanding."
+        if gender.lower() == "female"
+        else "You are drawn to partners who are nurturing and intellectually stimulating."
+    )
+
+    venus_traits = f"With Venus in {venus_sign}, your love style is {describe_venus_traits(venus_sign)}."
+    mars_traits = f"Your Mars in {mars_sign} makes you {describe_mars_traits(mars_sign)} in relationships."
+
+    return f"""
+{name}, you are meant to experience deep and meaningful relationships. Solitude may drain your energy, and companionship brings out the best in you. Based on your Nakshatra (**{nakshatra}**, Pada {pada}) and planetary placements, your emotional style blends intensity with affection.
+
+💖 **Emotional Traits:** {emotional}
+💑 **Ideal Partner Traits:** {partner}
+
+✨ **Nakshatra Personality Insight:** {personality}
+🌙 **Moon Sign Insight:** {intro}
+💘 **Venus in Love:** {venus_traits}
+🔥 **Mars in Passion:** {mars_traits}
+
+{marriage_tone} A tastefully arranged and emotionally secure home environment is essential for your romantic happiness.
+""".strip()
+
+@bp.route('/love', methods=['POST'])
+def love_prediction():
+    data = request.get_json()
+
+    user_id = data.get("user_id")
+    name = data.get("name")
+    dob = data.get("dob")
+    tob = data.get("tob")
+    place = data.get("place")
+    gender = data.get("gender")
+
+    if not all([name, dob, tob, place, gender]):
+        return jsonify({"error": "Missing required fields"}), 400
+
+    try:
+        nakshatra_data = generate_nakshatra_prediction(dob, tob, place)
+        if "error" in nakshatra_data:
+            return jsonify({"error": nakshatra_data["error"]}), 400
+
+        nakshatra_name = nakshatra_data["nakshatra"]
+        pada_num = int(nakshatra_data["pada"])
+
+        # Query Nakshatra info from DB
+        nakshatra_obj = Nakshatra.query.filter_by(name=nakshatra_name).first()
+        if not nakshatra_obj:
+            return jsonify({"error": f"Nakshatra {nakshatra_name} not found in DB"}), 404
+
+        # Query pada info from DB
+        pada_obj = Pada.query.filter_by(nakshatra_id=nakshatra_obj.id, pada_number=pada_num).first()
+
+        if pada_obj:
+            nakshatra_info = {
+                "personality": pada_obj.personality,
+                "strengths": json.loads(pada_obj.strengths or "[]"),
+                "weaknesses": json.loads(pada_obj.weaknesses or "[]"),
+                "career": json.loads(pada_obj.career or "[]"),
+                "emotional_traits": pada_obj.emotional_traits,
+                "ideal_partner": pada_obj.ideal_partner
+            }
+        else:
+            # fallback if no pada data found
+            nakshatra_info = {
+                "personality": "unique and complex",
+                "emotional_traits": "emotionally nuanced and expressive",
+                "ideal_partner": "emotionally understanding and supportive"
+            }
+
+        # Get planetary positions (Moon, Venus, Mars)
+        planets = get_zodiac_positions(dob, tob, place)
+
+        love_text = generate_love_text(name, gender, nakshatra_name, pada_num, planets, nakshatra_info)
+
+        report = LoveReport(
+            user_id=user_id,
+            name=name,
+            gender=gender,
+            dob=dob,
+            tob=tob,
+            place=place,
+            nakshatra=nakshatra_name,
+            pada=pada_num,
+            love_prediction=love_text
+        )
+        db.session.add(report)
+        db.session.commit()
+
+        return jsonify({
+            "name": name,
+            "nakshatra": nakshatra_name,
+            "pada": pada_num,
+            "love_prediction": love_text
+        }), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
