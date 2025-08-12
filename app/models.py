@@ -382,3 +382,18 @@ class TransitInterpretation(db.Model):
     __table_args__ = (
         db.UniqueConstraint('planet', 'house_number', name='unique_planet_house'),
     )
+
+class Service(db.Model):
+    __tablename__ = 'services'
+    id = db.Column(db.Integer, primary_key=True)
+    card_id = db.Column(db.String(100), nullable=True)  # e.g. 'birth-kundali-card'
+    title = db.Column(db.String(255), nullable=False)
+    img = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    route = db.Column(db.String(255), nullable=False)
+    link = db.Column(db.Boolean, default=False)  # For items like 'Match Horoscope'
+    fields = db.Column(db.Text, nullable=True)  # Store as comma-separated string
+
+    __table_args__ = (
+        db.UniqueConstraint('title', name='unique_service_title'),
+    )
