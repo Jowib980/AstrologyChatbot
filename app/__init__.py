@@ -15,10 +15,8 @@ def create_app():
 
     db.init_app(app)
     bcrypt.init_app(app)
-    # CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
-    
-    CORS(app, resources={r"/api/*": {"origins": "https://astro.jowibtechnologies.com"}}, supports_credentials=True)
-    
+    CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
+
     from app.routes.auth import bp as auth_bp
     app.register_blueprint(auth_bp, url_prefix="/api")
 
@@ -69,6 +67,9 @@ def create_app():
 
     from app.routes.services import bp as services_bp
     app.register_blueprint(services_bp, url_prefix="/api")
+
+    from app.routes.rashis import bp as rashis_bp
+    app.register_blueprint(rashis_bp, url_prefix="/api")
 
     with app.app_context():
         db.create_all()

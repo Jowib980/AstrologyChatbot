@@ -396,4 +396,21 @@ class Service(db.Model):
 
     __table_args__ = (
         db.UniqueConstraint('title', name='unique_service_title'),
+
+    )
+
+
+class Rashis(db.Model):
+    __tablename__ = 'rashis'
+    id = db.Column(db.Integer, primary_key=True)
+    card_id = db.Column(db.String(100), nullable=True)
+    icon = db.Column(db.Text, nullable=False)
+    title = db.Column(db.String(255), nullable=False)
+    img = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    route = db.Column(db.String(255), nullable=False)
+    short_description = db.Column(db.String(255), nullable=False)
+
+    __table_args__ = (
+        db.UniqueConstraint('title', name='unique_rashis_title'),
     )

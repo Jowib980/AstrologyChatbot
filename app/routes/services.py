@@ -18,3 +18,4 @@ def get_services():
             "link": s.link
         })
     return jsonify(data)
+
