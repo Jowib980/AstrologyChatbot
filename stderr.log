@@ -172,3 +172,6 @@ NameError: name 'app' is not defined
 {'nakshatra': 'Purva Ashadha', 'pada': 4, 'personality': 'Spiritual and generous.', 'strengths': ['Charity', 'Philosophy'], 'weaknesses': ['Naivety'], 'career': ['Priest', 'Guru'], 'emotional_traits': 'emotionally intense but caring', 'ideal_partner': 'an adventurous and independent soul', 'keywords': ['invincibility', 'ambition', 'expansion']}
 {'nakshatra': 'Purva Ashadha', 'pada': 4, 'personality': 'Spiritual and generous.', 'strengths': ['Charity', 'Philosophy'], 'weaknesses': ['Naivety'], 'career': ['Priest', 'Guru'], 'emotional_traits': 'emotionally intense but caring', 'ideal_partner': 'an adventurous and independent soul', 'keywords': ['invincibility', 'ambition', 'expansion']}
 Received JSON payload: {'name': 'Admin', 'gender': 'Female', 'dob': '2002-03-06', 'tob': '19:05', 'place': 'Nadaun', 'user_id': '1'}
+Received JSON payload: {'name': 'Admin', 'gender': 'Female', 'dob': '2002-03-06', 'tob': '19:05', 'place': 'Nadaun', 'user_id': '1'}
+Received JSON payload: {'name': 'Shivangi', 'gender': 'Female', 'dob': '2002-03-06', 'tob': '19:05', 'place': 'Nadaun', 'user_id': '1'}
+Received JSON payload: {'name': 'Admin', 'gender': 'Female', 'dob': '2002-03-06', 'tob': '19:05', 'place': 'Nadaun', 'user_id': '1'}

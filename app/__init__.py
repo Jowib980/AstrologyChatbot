@@ -67,6 +67,9 @@ def create_app():
     from app.routes.contact import bp as contact_bp
     app.register_blueprint(contact_bp, url_prefix="/api")
 
+    from app.routes.services import bp as services_bp
+    app.register_blueprint(services_bp, url_prefix="/api")
+
     with app.app_context():
         db.create_all()
 
