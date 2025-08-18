@@ -4,6 +4,7 @@ from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from app.config import Config
 from dotenv import load_dotenv
+import os
 load_dotenv()
 
 db = SQLAlchemy()
@@ -16,6 +17,11 @@ def create_app():
     db.init_app(app)
     bcrypt.init_app(app)
     CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
+
+    app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'uploads')
+    app.config['MAX_CONTENT_LENGTH'] = 8 * 1024 * 1024  # 8 MB, optional
+
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
     from app.routes.auth import bp as auth_bp
     app.register_blueprint(auth_bp, url_prefix="/api")
@@ -70,6 +76,12 @@ def create_app():
 
     from app.routes.rashis import bp as rashis_bp
     app.register_blueprint(rashis_bp, url_prefix="/api")
+
+    from flask import send_from_directory
+    @app.route('/uploads/<path:filename>')
+    def uploaded_file(filename):
+        return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
 
     with app.app_context():
         db.create_all()
